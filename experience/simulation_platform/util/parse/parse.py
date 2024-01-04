@@ -4,10 +4,10 @@ from DeviceController.DeviceController import *
 def parse(effect, effect_and_pre, env):
     temp_list = effect.split('.')
     state = env["space_dict"][temp_list[0]]["env_state"][temp_list[1]]
-    func = Environment Change
+    func = None
     if effect_and_pre[effect] == '':
         # 获得action
-        func = getattr(state, temp_list[2], Environment Change)
+        func = getattr(state, temp_list[2], None)
     else:
         pre_condition_list = effect_and_pre[effect].split(' ')
         if len(pre_condition_list) == 3:
@@ -23,10 +23,10 @@ def parse(effect, effect_and_pre, env):
             state_two.lock.release()
             if pre_condition_list[1] == '<':
                 if (value_two == 1 and value_one != 1) or (value_two == 0 and value_one == -1):
-                    func = getattr(state, temp_list[2], Environment Change)
+                    func = getattr(state, temp_list[2], None)
             elif pre_condition_list[1] == '>':
                 if (value_one == 1 and value_two != 1) or (value_one == 0 and value_two == -1):
-                    func = getattr(state, temp_list[2], Environment Change)
+                    func = getattr(state, temp_list[2], None)
         elif len(pre_condition_list) == 5:
             temp_one_list = pre_condition_list[0].split('.')
             temp_two_list = pre_condition_list[2].split('.')
@@ -40,10 +40,10 @@ def parse(effect, effect_and_pre, env):
             state_two.lock.release()
             if pre_condition_list[4] == '2':
                 if value_one == 1 and value_two == -1:
-                    func = getattr(state, temp_list[2], Environment Change)
+                    func = getattr(state, temp_list[2], None)
             elif pre_condition_list[4] == '-2':
                 if value_one == -1 and value_two == 1:
-                    func = getattr(state, temp_list[2], Environment Change)
+                    func = getattr(state, temp_list[2], None)
         elif len(pre_condition_list) == 7 and ("&&" in pre_condition_list):
             temp_one_list = pre_condition_list[0].split('.')
             temp_two_list = pre_condition_list[2].split('.')
@@ -63,8 +63,8 @@ def parse(effect, effect_and_pre, env):
             device.lock.release()
             if pre_condition_list[1] == '<':
                 if (value_two == 1 and value_one != 0 and value_device == value) or (value_two == 0 and value_one == -1 and value_device == value):
-                    func = getattr(state, temp_list[2], Environment Change)
+                    func = getattr(state, temp_list[2], None)
             elif pre_condition_list[1] == '>':
                 if (value_one == 1 and value_two != 0 and value_device == value) or (value_one == 0 and value_two == -1 and value_device == value):
-                    func = getattr(state, temp_list[2], Environment Change)
+                    func = getattr(state, temp_list[2], None)
     return (func, state)
