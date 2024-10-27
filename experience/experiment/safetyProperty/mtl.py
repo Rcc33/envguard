@@ -26,7 +26,7 @@ LTL = {
   "G !(MeetingRoomTwo.temperature_up & MeetingRoomTwo.temperature_down)",
   
   
-  "G (Lab.brightness_up & (Lab.HumanState.detected))",
+  "G(Lab.Brightness.high & Lab.HumanState.detected)",
   
   
   "G !(Context.Weather.raining & Lab.Window.on)",
@@ -48,7 +48,6 @@ MTL = [
   "G(TeaRoom.humdity_up -> (F[0, 60*60] !TeaRoom.humidity_up))",
   "G(MeetingRoomOine.humidity_up -> (F[0, 60*60] !MeetingRoomOne.humidity_up))",
   "G(MeetingRoomTwo.humidity_up -> (F[0, 60*60] !MeetingRoomTwo.humidity_up))",
-  "G(Corridor.humidity_up -> (F[0, 60*60] !Corridor.humidity_up))",
   
   "G((Lab.AirQuality.low & Lab.HumanState.detected) -> (F[0, 10*60] Lab.air_quality_up))",
   "G((TeaRoom.AirQuality.low & TeaRoom.HumanState.detected) -> (F[0, 10*60] TeaRoom.air_quality_up))",
@@ -56,15 +55,17 @@ MTL = [
   "G((MeetingRoomTwo.AirQuality.low & MeetingRoomTwo.HumanState.detected) -> (F[0, 10*60] MeetingRoomTwo.air_quality_up))",
   "G((Corridor.AirQuality.low & Corridor.HumanState.detected) -> (F[0, 10*60] Corridor.air_quality_up))",
   
+  # "G(Lab.human_detected -> (F[0, 30] Lab.Brightness.high))",
   
   "G(MeetingRoomOne.human_undetected -> (F[0, 30] MeetingRoomOne.Light.off))",
   "G(MeetingRoomTwo.human_undetected -> (F[0, 30] MeetingRoomTwo.Light.off))",
   
   
-  "G((TeaRoom.WaterDispenser.on) -> (F[0, 2*60] !(TeaRoom.WaterDispenser.on)))",
+  "G((TeaRoom.WaterDispenser.on) -> (F[0, 2*60] !(TeaRoom.WaterDispenser.off)))",
   
   "G((Lab.Speaker.on) -> (F[0, 1*60] !(Lab.Speaker.on)))",    
   "G((Corridor.Speaker.on) -> (F[0, 1*60] !(Corridor.Speaker.on)))",    
+  
   
 ]
   
@@ -131,7 +132,7 @@ def getPreConditionLTL(preCondition):
 
 def getLTL(list):
   result_list = []
-  url = "http://47.101.169.122:5002/effect_node/" + list[0]+ '/effect_' + list[1]
+  url = "http://47.101.169.122:5004/effect_node/" + list[0]+ '/effect_' + list[1]
   results = requests.get(url).json()
   for result in results:
     ltl_action = ''
@@ -145,7 +146,7 @@ def getLTL(list):
 
 def getActionPre(list):
   result_list = []
-  url = "http://47.101.169.122:5002/effect_node/" + list[0]+ '/effect_' + list[1]
+  url = "http://47.101.169.122:5004/effect_node/" + list[0]+ '/effect_' + list[1]
   results = requests.get(url).json()
   for result in results:
     ltl_action = ''
@@ -706,7 +707,7 @@ def getAction(state, flag):
       else:
         if value == 'high':
           action_list = []
-          url = "http://47.101.169.122:5002/effect_node/" + room+ '/effect_' + toSnake(type) + '_up'
+          url = "http://47.101.169.122:5004/effect_node/" + room+ '/effect_' + toSnake(type) + '_up'
           results = requests.get(url).json()
           for result in results:
             ltl_action = ''
@@ -727,7 +728,7 @@ def getAction(state, flag):
               actions = '(' + "'" + toSnake(type) + '_up' + "'" + '==' + 'df.iat[index, 0]' + ' and '  + "'" + room  + "'" + '==' + 'df.iat[index, 2]' + ')'
         elif value == 'middle':
           action_list = []
-          url = "http://47.101.169.122:5002/effect_node/" + room+ '/effect_' + toSnake(type) + '_up'
+          url = "http://47.101.169.122:5004/effect_node/" + room+ '/effect_' + toSnake(type) + '_up'
           results = requests.get(url).json()
           for result in results:
             ltl_action = ''
@@ -747,7 +748,7 @@ def getAction(state, flag):
             else: 
               actions = '(' + "'" + toSnake(type) + '_up' + "'" + '==' + 'df.iat[index, 0]' + ' and '  + "'" + room  + "'" + '==' + 'df.iat[index, 2]' + ')'
           action_list = []
-          url = "http://47.101.169.122:5002/effect_node/" + room+ '/effect_' + toSnake(type) + '_down'
+          url = "http://47.101.169.122:5004/effect_node/" + room+ '/effect_' + toSnake(type) + '_down'
           results = requests.get(url).json()
           for result in results:
             ltl_action = ''
@@ -768,7 +769,7 @@ def getAction(state, flag):
               actions = '(' + "'" + toSnake(type) + '_down' + "'" + '==' + 'df.iat[index, 0]' + ' and '  + "'" + room  + "'" + '==' + 'df.iat[index, 2]' + ')'
         else:
           action_list = []
-          url = "http://47.101.169.122:5002/effect_node/" + room+ '/effect_' + toSnake(type) + '_down'
+          url = "http://47.101.169.122:5004/effect_node/" + room+ '/effect_' + toSnake(type) + '_down'
           results = requests.get(url).json()
           for result in results:
             ltl_action = ''
@@ -819,7 +820,7 @@ def getAction(state, flag):
       else:
         if value == 'high':
           action_list = []
-          url = "http://47.101.169.122:5002/effect_node/" + room+ '/effect_' + toSnake(type) + '_down'
+          url = "http://47.101.169.122:5004/effect_node/" + room+ '/effect_' + toSnake(type) + '_down'
           results = requests.get(url).json()
           for result in results:
             ltl_action = ''
@@ -840,7 +841,7 @@ def getAction(state, flag):
               actions = '(' + "'" + toSnake(type) + '_down' + "'" + '==' + 'df.iat[index, 0]' + ' and '  + "'" + room  + "'" + '==' + 'df.iat[index, 2]' + ')'
         elif value == 'middle':
           action_list = []
-          url = "http://47.101.169.122:5002/effect_node/" + room+ '/effect_' + toSnake(type) + '_up'
+          url = "http://47.101.169.122:5004/effect_node/" + room+ '/effect_' + toSnake(type) + '_up'
           results = requests.get(url).json()
           for result in results:
             ltl_action = ''
@@ -861,7 +862,7 @@ def getAction(state, flag):
               actions = '(' + "'" + toSnake(type) + '_up' + "'" + '==' + 'df.iat[index, 0]' + ' and '  + "'" + room  + "'" + '==' + 'df.iat[index, 2]' + ')'
           
           action_list = []
-          url = "http://47.101.169.122:5002/effect_node/" + room+ '/effect_' + toSnake(type) + '_down'
+          url = "http://47.101.169.122:5004/effect_node/" + room+ '/effect_' + toSnake(type) + '_down'
           results = requests.get(url).json()
           for result in results:
             ltl_action = ''
@@ -882,7 +883,7 @@ def getAction(state, flag):
               actions = '(' + "'" + toSnake(type) + '_down' + "'" + '==' + 'df.iat[index, 0]' + ' and '  + "'" + room  + "'" + '==' + 'df.iat[index, 2]' + ')'
         else:
           action_list = []
-          url = "http://47.101.169.122:5002/effect_node/" + room+ '/effect_' + toSnake(type) + '_up'
+          url = "http://47.101.169.122:5004/effect_node/" + room+ '/effect_' + toSnake(type) + '_up'
           results = requests.get(url).json()
           for result in results:
             ltl_action = ''
@@ -952,7 +953,7 @@ def getStateCondition(state):
     condition = state
   else:
     if value == 'high':
-      url = "http://47.101.169.122:5002/effect_node/" + room+ '/effect_' + toSnake(type) + '_up'
+      url = "http://47.101.169.122:5004/effect_node/" + room+ '/effect_' + toSnake(type) + '_up'
       results = requests.get(url).json()
       for result in results:
         ltl_action = ''
@@ -971,7 +972,7 @@ def getStateCondition(state):
             condition = ltl_action
       condition = '(' + condition + ')' + ' & ' + room + '.' + type + '.' + 'middle'       
     elif value == 'middle':
-      url = "http://47.101.169.122:5002/effect_node/" + room+ '/effect_' + toSnake(type) + '_up'
+      url = "http://47.101.169.122:5004/effect_node/" + room+ '/effect_' + toSnake(type) + '_up'
       results = requests.get(url).json()
       for result in results:
         ltl_action = ''
@@ -990,7 +991,7 @@ def getStateCondition(state):
             condition = ltl_action
       condition = '(' + condition + ')' + ' & ' + room + '.' + type + '.' + 'low'
       
-      url = "http://47.101.169.122:5002/effect_node/" + room+ '/effect_' + toSnake(type) + '_down'
+      url = "http://47.101.169.122:5004/effect_node/" + room+ '/effect_' + toSnake(type) + '_down'
       results = requests.get(url).json()
       for result in results:
         ltl_action = ''
@@ -1009,7 +1010,7 @@ def getStateCondition(state):
             condition = ltl_action
       condition = '(' + condition + ')' + ' & ' + room + '.' + type + '.' + 'high'
     else:
-      url = "http://47.101.169.122:5002/effect_node/" + room+ '/effect_' + toSnake(type) + '_down'
+      url = "http://47.101.169.122:5004/effect_node/" + room+ '/effect_' + toSnake(type) + '_down'
       results = requests.get(url).json()
       for result in results:
         ltl_action = ''
@@ -1072,7 +1073,6 @@ def LTLRegulation():
       "fix":fix,
       "flag":flag 
     }
-    print(template)
     regulation.append(template)
   for ltl in LTL:
     ltl = ltl.replace(' ', '')
@@ -1102,8 +1102,6 @@ def LTLRegulation():
             trigger = '(' + trigger + ')' + ' or ' + '(' + f + ')'
         else:
           trigger = f 
-      print()
-      print(condition)
       for t in change(condition):
         condition = condition.replace(t[0], t[1], 1)
       if 'G!' not in ltl:
@@ -1156,7 +1154,7 @@ def LTLRegulation():
             trigger = '(' + trigger + ')' + ' or ' + '(' + f + ')'
         else:
           trigger = f
-      url = "http://47.101.169.122:5002/effect_node/" + effect.split('.')[0]+ '/effect_' + effect.split('.')[1]
+      url = "http://47.101.169.122:5004/effect_node/" + effect.split('.')[0]+ '/effect_' + effect.split('.')[1]
       results = requests.get(url).json()
       fix_temp = []
       for result in results:
@@ -1232,7 +1230,7 @@ def LTLRegulation():
           condition = ' | '.join(getLTL(effect.split('.')))
         else:
           condition = '(' + condition + ')' +' & ' + '(' + ' | '.join(getLTL(effect.split('.'))) + ')'
-        url = "http://47.101.169.122:5002/effect_node/" + effect.split('.')[0]+ '/effect_' + effect.split('.')[1]
+        url = "http://47.101.169.122:5004/effect_node/" + effect.split('.')[0]+ '/effect_' + effect.split('.')[1]
         results = requests.get(url).json()
         fix_temp = []
         for result in results:

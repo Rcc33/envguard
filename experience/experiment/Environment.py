@@ -244,7 +244,7 @@ def getEnvonment():
     env_state["Humidity"] = Humidity()
     env_state["Noise"] = Noise()
     env_state["AirQuality"] = AirQuality()
-    env_state["HumanState"] = HumanState()
+    env_state["HumanState"] = HumanState(0)
 
     device_dict["AC"] = AC()
     device_dict["Heater"] = Heater()
@@ -269,7 +269,7 @@ def getEnvonment():
     env_state["Humidity"] = Humidity()
     env_state["Noise"] = Noise()
     env_state["AirQuality"] = AirQuality()
-    env_state["HumanState"] = HumanState()
+    env_state["HumanState"] = HumanState(0)
 
     device_dict["AC"] = AC()
     device_dict["TV"] = TV()
@@ -294,7 +294,7 @@ def getEnvonment():
     env_state["Humidity"] = Humidity()
     env_state["Noise"] = Noise()
     env_state["AirQuality"] = AirQuality()
-    env_state["HumanState"] = HumanState()
+    env_state["HumanState"] = HumanState(0)
 
     device_dict["AC"] = AC()
     device_dict["TV"] = TV()
@@ -320,7 +320,7 @@ def getEnvonment():
     env_state["Humidity"] = Humidity()
     env_state["Noise"] = Noise()
     env_state["AirQuality"] = AirQuality()
-    env_state["HumanState"] = HumanState()
+    env_state["HumanState"] = HumanState(0)
 
     # device_dict["AC"] = AC()
     device_dict["WaterDispenser"] = WaterDispenser()
@@ -346,7 +346,7 @@ def getEnvonment():
     env_state["Humidity"] = Humidity()
     env_state["Noise"] = Noise()
     env_state["AirQuality"] = AirQuality()
-    env_state["HumanState"] = HumanState()
+    env_state["HumanState"] = HumanState(0)
 
     device_dict["Light"] = Light()
     device_dict["Speaker"] = Speaker()
@@ -359,8 +359,8 @@ def getEnvonment():
     env["space_dict"] = space_dict
     return env
 
-# env = getEnvonment()
-env = getHomeEnvonment()
+env = getEnvonment()
+# env = getHomeEnvonment()
 path = "./environment/device"
 get_dir(path, 'device')
 path = "./environment/state"
